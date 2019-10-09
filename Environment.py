@@ -12,7 +12,7 @@ turtle.screensize(SCREEN_X, SCREEN_Y)
 turtle.ht()
 
 r = Rectangle(0, 0, 50, 50, RECT_COLOR)
-r.draw_rect()
+r.test()
 
 
 turtle.done()
