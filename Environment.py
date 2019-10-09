@@ -9,8 +9,10 @@ SCREEN_Y = 1000
 RECT_COLOR = 'blue'
 
 turtle.screensize(SCREEN_X, SCREEN_Y)
+turtle.ht()
 
-draw_rect(0, 0, 50, 50, RECT_COLOR)
+r = Rectangle(0, 0, 50, 50, RECT_COLOR)
+r.draw_rect()
 
 
 turtle.done()
