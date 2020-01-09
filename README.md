@@ -1,6 +1,6 @@
 # RobotCar
 
-# TLDR 
+# INTRO
 Hi this is Hannah (first year, Computer Engineering, and I've been working with this lab since fall quarter 2019 with Alex Levine and Peter Stratton!
 
 Our work mostly has focused on three areas: hardware for building the robot, strengthening our probability background, and working on Python simulations.
