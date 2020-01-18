@@ -38,13 +38,13 @@ class Simulator:
         Draw environment and robot on the screen.
         """
         # Draw robot
-        self.env.map = cv2.circle(self.env.map, (int(self.robot.x), int(self.robot.y)), color=(0, 0, 255), radius=5,
-                                  thickness=-1)
+        self.env.map = cv2.circle(self.env.map, (int(self.robot.x), int(self.robot.y)),
+                                  color=(0, 0, 255), radius=self.robot.radius, thickness=-1)
         cv2.imshow("lab", self.env.map)
         # Erase previous robot
-        self.env.map = cv2.circle(self.env.map, (int(self.robot.x), int(self.robot.y)), color=(255, 255, 255), radius=5,
-                                  thickness=-1)
-        cv2.waitKey(1)
+        self.env.map = cv2.circle(self.env.map, (int(self.robot.x), int(self.robot.y)),
+                                  color=(255, 255, 255), radius=self.robot.radius, thickness=-1)
+        cv2.waitKey()
 
     def close(self):
         """

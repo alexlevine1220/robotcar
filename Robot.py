@@ -1,12 +1,12 @@
 import math
 import Sensor
 from Constants import OBSTACLE, GOAL
+from time import sleep
 
 
 class Robot:
     def __init__(self, env, robot_type, x, y):
         """
-
         :param env: 2d np array where the robot resides
         :param robot_type:
         :param x: x position of the robot
@@ -32,7 +32,7 @@ class Robot:
 
     def step(self, action):
         """
-        :param action:
+        :param action: action robot takes in this step
         :return: sensor data from robot
         """
         print(action)
@@ -40,18 +40,31 @@ class Robot:
         if action == "move":
             new_x = self.x + math.sin(self.watching)
             new_y = self.y + math.cos(self.watching)
-            # Collision Checking
-            for d in range(360):
-                corner_x = new_x + math.cos(d) * self.radius
-                corner_y = new_y + math.sin(d) * self.radius
 
+            print(self.watching, math.sin(self.watching))
+
+            hit = False
+
+            # Collision Checking
+            for d in range(1, 360):
+                corner_x = new_x + math.cos(2 * math.pi * d / 360) * self.radius
+                corner_y = new_y + math.sin(2 * math.pi * d / 360) * self.radius
+
+                if (self.env.map[int(corner_x)][int(corner_y)] == OBSTACLE).all():
+                    hit = True
+                    print("HIT")
+                    break
+
+            if not hit:
+                self.x = new_x
+                self.y = new_y
         elif action == "turn_left":
             self.watching -= 0.1
         elif action == "turn_right":
             self.watching += 0.1
 
         data = self.sensor.sense(self.x, self.y)
-        done = (self.env.map[self.x, self.y] == GOAL).all()
+        done = (self.env.map[int(self.x), int(self.y)] == GOAL).all()
 
         return data, done
 

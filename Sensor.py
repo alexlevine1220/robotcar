@@ -23,16 +23,14 @@ class Sensor:
         """
         data = [self.range] * self.n_sensor
         for i in range(self.n_sensor):
-            angle = -self.angle / 2 + (self.angle * (self.n_sensor - 1))
+            angle = -self.angle / 2 + (self.angle / (self.n_sensor - 1)) * i
 
             for length in range(self.range):
                 ray_x = int(x + math.cos(angle) * length)
                 ray_y = int(y + math.sin(angle) * length)
 
-                print(ray_x, " ", ray_y, " is ", self.env.map[ray_x][ray_y])
                 if (self.env.map[ray_x][ray_y] == OBSTACLE).all():
                     data[i] = length
                     break
 
-        print(data)
         return data

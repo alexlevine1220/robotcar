@@ -35,7 +35,5 @@ class Environment:
         self.goal_x = 150
         self.goal_y = 150
 
-        self.map = cv2.circle(self.map, (self.goal_x, self.goal_y), color=(255, 0, 0), radius=5,
-                                  thickness=-1)
-
-
+        self.map = cv2.circle(self.map, (int(self.goal_x), int(self.goal_y)),
+                              color=(255, 0, 0), radius=5, thickness=-1)

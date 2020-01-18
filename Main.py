@@ -20,7 +20,6 @@ if __name__ == "__main__":
     agent = RandomAgent(sim.action_space)
 
     while True:
-        time.sleep(10)
         sim.render()
         action = agent.act(sensor_data)
         sim.reset()
