@@ -1,44 +1,41 @@
-import numpy as np
 import cv2
-import gym
-import Robot
+import math
+from Constants import ROBOT, GOAL
 
 
 class Environment:
-    def __init__(self, robot_type, sensor_type, map_path):
-        self.robot = Robot.Robot(robot_type, sensor_type)
-        self.action_space = self.robot.action_space
-        self.total_step = 0
+    def __init__(self, map_path):
         self.map = cv2.imread(map_path)
+        self.map_width = self.map.shape[0]
+        self.map_height = self.map.shape[1]
 
-    def reset(self):
+        # TODO : once drawing is done, change to this
         """
-        :return:
-        sensor  : sensor data from robot
-        done    : 0 if not done, otherwise total_step
-        """
-        self.robot.reset()
-        self.total_step = 0
-        return 0, 0
+        min_robot_x = math.inf
+        max_robot_x = -math.inf
+        min_goal_x = math.inf
+        max_goal_x = -math.inf
 
-    def step(self, action_type):
-        """
-        :param action_type: choose action
-        :return:
-        sensor  : sensor data from robot
-        done    : 0 if not done, otherwise total_step
-        """
-        self.robot.step(action_type)
-        self.total_step += 1
-        return self.robot, 0
+        for i in range(self.map_width):
+            for j in range(self.map_height):
+                if self.map[i][j] == ROBOT:
+                    min_robot_x = min(min_robot_x, i)
+                    max_robot_x = max(max_robot_x, i)
+                if self.map[i][j] == GOAL:
+                    min_goal_x = min(min_goal_x, i)
+                    max_goal_x = max(max_goal_x, i)
 
-    def render(self):
+        self.start_x = (min_robot_x + max_robot_x)
+        self.start_y = (min_robot_y + max_robot_y)
+        self.goal_x = (min_goal_x + max_goal_x)
+        self.goal_y = (min_goal_y + max_goal_y)
         """
-        Draw environment and robot on the screen.
-        """
-        with_robot = cv2.circle(self.map, (int(self.robot.x), int(self.robot.y)), color=(0, 0, 255), radius=5, thickness=-1)
-        cv2.imshow("lab", with_robot)
-        cv2.waitKey(1)
+        self.start_x = 50
+        self.start_y = 50
+        self.goal_x = 150
+        self.goal_y = 150
 
-    def close(self):
-        pass
+        self.map = cv2.circle(self.map, (self.goal_x, self.goal_y), color=(255, 0, 0), radius=5,
+                                  thickness=-1)
+
+

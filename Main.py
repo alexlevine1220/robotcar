@@ -1,6 +1,8 @@
-import Environment
 import random
 import time
+import math
+
+import Simulator
 
 
 class RandomAgent(object):
@@ -12,19 +14,18 @@ class RandomAgent(object):
 
 
 if __name__ == "__main__":
-    env = Environment.Environment("circle", "basic", "images/maze00.jpg")
-    sensor, done = env.reset()
-    agent = RandomAgent(env.action_space)
+    sim = Simulator.Simulator("circle", "images/maze00.jpg")
+
+    sensor_data, done = sim.reset()
+    agent = RandomAgent(sim.action_space)
 
     while True:
-        time.sleep(0.1)
-        env.render()
-        action = agent.act(sensor)
-        print(type(env), action)
-        env.reset()
-        sensor, done = env.step(action)
-        # Use sensor data to take plan action
-        #if done:
-        #    break
+        time.sleep(10)
+        sim.render()
+        action = agent.act(sensor_data)
+        sim.reset()
+        sensor, done = sim.step(action)
+        if done:
+            break
 
-    env.close()
+    sim.close()
