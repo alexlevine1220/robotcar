@@ -1,77 +1,57 @@
-import pygame
-import random
+from cv2 import cv2
+import math
+from Constants import ROBOT, GOAL, OBSTACLE, BLANK
 
-SCREEN_X = 1000
-SCREEN_Y = 1000
-DELAY_MILLI = 100
 
-CAR_WIDTH = 30
-CAR_HEIGHT = 30
-RECT_WIDTH = 50
-RECT_HEIGHT = 50
-x = (SCREEN_X / 2)
-y = (SCREEN_Y / 2)
-SPEED = 5
+class Environment:
+    def __init__(self, map_path):
+        """[summary]
 
-print("Enter the number rectangles between 1 and 10: ")
-numRects = input()
-valid = True
-while(valid):
-    if(numRects.isdigit() == False):
-        print("Error, user input was not a number.")
-        print("Enter the number rectangles between 1 and 10: ")
-        numRects = input()
-    else:
-        numRects = int(numRects)
+        Arguments:
+            map_path {[type]} -- [description]
+        """
+        self.map = cv2.resize(cv2.imread(map_path),
+                              (200, 160))  # 2d numpy [row][col][channel-rgb]
+        self.map_width = self.map.shape[0]
+        self.map_height = self.map.shape[1]
 
-        if (numRects < 1 or numRects > 10):
-            print("Error, value entered is out of bounds.")
-            print("Enter the number rectangles between 1 and 10: ")
-            numRects = input()
+        # TODO : once drawing is done, change to this
+        """
+        min_robot_x = math.inf
+        max_robot_x = -math.inf
+        min_goal_x = math.inf
+        max_goal_x = -math.inf
+
+        for i in range(self.map_width):
+            for j in range(self.map_height):
+                if self.map[i][j] == ROBOT:
+                    min_robot_x = min(min_robot_x, i)
+                    max_robot_x = max(max_robot_x, i)
+                if self.map[i][j] == GOAL:
+                    min_goal_x = min(min_goal_x, i)
+                    max_goal_x = max(max_goal_x, i)
+
+        self.start_x = (min_robot_x + max_robot_x)
+        self.start_y = (min_robot_y + max_robot_y)
+        self.goal_x = (min_goal_x + max_goal_x)
+        self.goal_y = (min_goal_y + max_goal_y)
+        """
+        self.start_x = 10
+        self.start_y = 10
+        self.goal_x = 190
+        self.goal_y = 150
+
+        self.map = cv2.circle(self.map, (int(self.goal_x), int(
+            self.goal_y)), color=GOAL, radius=5, thickness=-1)
+
+    def type(self, x, y):
+        if x < 0 or y < 0 or x >= self.map_width or y >= self.map_height:
+            return "OUT"
+        elif (self.map[x][y] == ROBOT).all():
+            return "ROBOT"
+        elif (self.map[x][y] == OBSTACLE).all():
+            return "OBSTACLE"
+        elif (self.map[x][y] == BLANK).all():
+            return "SAFE"
         else:
-            valid = False
-
-rectCoordinates = []
-for i in range(numRects):
-    rX = random.randint(0 + CAR_WIDTH, SCREEN_X - CAR_WIDTH)
-    rY = random.randint(0 + CAR_WIDTH, SCREEN_X - CAR_WIDTH)
-    rectCoordinates.append((rX, rY))
-
-
-pygame.init()
-
-screen = pygame.display.set_mode((SCREEN_X, SCREEN_Y))
-pygame.display.set_caption("First Game")
-
-running = True
-while running:
-    pygame.time.delay(DELAY_MILLI)
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            running = False
-
-    keys = pygame.key.get_pressed()
-
-    if keys[pygame.K_LEFT]:
-        if (x - SPEED > 0):
-            x -= SPEED
-    if keys[pygame.K_RIGHT]:
-        if (x + SPEED + CAR_WIDTH < SCREEN_X):
-            x += SPEED
-    if keys[pygame.K_UP]:
-        if (y - SPEED > 0):
-            y -= SPEED
-    if keys[pygame.K_DOWN]:
-        if (y + SPEED + CAR_HEIGHT < SCREEN_Y):
-            y += SPEED
-
-    screen.fill((0, 0, 0))
-
-    for i in range(len(rectCoordinates)):
-        rX, rY = rectCoordinates[i]
-        pygame.draw.rect(screen, (0, 255, 0), (rX, rY, RECT_WIDTH, RECT_HEIGHT))
-
-    pygame.draw.rect(screen, (255, 0, 0), (x, y, CAR_WIDTH, CAR_HEIGHT))
-    pygame.display.update()
-
-pygame.quit()
+            return "UNKNOWN"
