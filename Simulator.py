@@ -13,6 +13,7 @@ class Simulator:
                            self.env.start_x, self.env.start_y, debug)
         self.total_step = 0
         self.action_space = self.robot.action_space
+        self.debug = debug
 
     def reset(self):
         """
@@ -41,9 +42,11 @@ class Simulator:
         Draw environment and robot on the screen.
         """
         # Draw robot
-        cv2.imshow("lab", self.robot.draw(True))
+        cv2.imshow("lab", self.robot.draw(erase=False))
+        if self.debug:
+            cv2.waitKey()
         cv2.waitKey(1)
-        self.robot.draw(False)
+        self.robot.draw(erase=True)
 
     def close(self):
         """

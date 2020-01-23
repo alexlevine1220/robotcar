@@ -1,5 +1,5 @@
 import math
-from Constants import ROBOT, OBSTACLE, GOAL
+from Constants import ROBOT, OBSTACLE, GOAL, BLANK
 from time import sleep
 from cv2 import cv2
 
@@ -16,6 +16,7 @@ class Robot:
         self.env = env
         self.sensor_type = sensor_type
         self.robot_type = robot_type
+        self.debug = debug
 
         if debug:
             print("Sensor Types of " + sensor_type + " is created")
@@ -55,8 +56,8 @@ class Robot:
             [type] -- [description]
         """
 
-        new_x = 0
-        new_y = 0
+        new_x = self.x
+        new_y = self.y
 
         if self.robot_type == "square":
             if action == "move_left":
@@ -74,6 +75,8 @@ class Robot:
             if True:
                 self.x = new_x
                 self.y = new_y
+                if self.debug:
+                    print("new_position", self.x, self.y)
         elif self.robot_type == "circle":
             if action == "move":
                 new_x = self.x + math.sin(self.watching)
@@ -116,11 +119,11 @@ class Robot:
     def draw(self, erase=False):
         if self.robot_type == "square":
             if erase:
-                return cv2.rectangle(self.env.map, (self.x - side / 2, self.y - side / 2),
-                                     (self.x + side / 2, self.y + side / 2), color=BLANK, thickness=-1)
+                return cv2.rectangle(self.env.map, (int(self.x - self.side / 2), int(self.y - self.side / 2)),
+                                     (int(self.x + self.side / 2), int(self.y + self.side / 2)), color=ROBOT, thickness=-1)
             else:
-                return cv2.rectangle(self.env.map, (self.x - side / 2, self.y - side / 2),
-                                     (self.x + side / 2, self.y + side / 2), color=ROBOT, thickness=-1)
+                return cv2.rectangle(self.env.map, (int(self.x - self.side / 2), int(self.y - self.side / 2)),
+                                     (int(self.x + self.side / 2), int(self.y + self.side / 2)), color=ROBOT, thickness=-1)
         elif self.robot_type == "circle":
             if erase:
                 return cv2.circle(self.env.map, (self.x, self.y), color=BLANK, radius=5, thickness=-1)

@@ -37,7 +37,7 @@ class Environment:
         self.goal_y = (min_goal_y + max_goal_y)
         """
         self.start_x = 10
-        self.start_y = 10
+        self.start_y = 20
         self.goal_x = 190
         self.goal_y = 150
 
@@ -47,11 +47,13 @@ class Environment:
     def type(self, x, y):
         if x < 0 or y < 0 or x >= self.map_width or y >= self.map_height:
             return "OUT"
-        elif (self.map[x][y] == ROBOT).all():
+        elif (self.map[y][x] == ROBOT).all():
             return "ROBOT"
-        elif (self.map[x][y] == OBSTACLE).all():
+        elif (self.map[y][x] == OBSTACLE).all():
             return "OBSTACLE"
-        elif (self.map[x][y] == BLANK).all():
+        elif (self.map[y][x] == BLANK).all():
             return "SAFE"
+        elif (self.map[y][x] == GOAL).all():
+            return "GOAL"
         else:
             return "UNKNOWN"
