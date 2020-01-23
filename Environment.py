@@ -1,11 +1,17 @@
-import cv2
+from cv2 import cv2
 import math
-from Constants import ROBOT, GOAL
+from Constants import ROBOT, GOAL, OBSTACLE, BLANK
 
 
 class Environment:
     def __init__(self, map_path):
-        self.map = cv2.imread(map_path)
+        """[summary]
+
+        Arguments:
+            map_path {[type]} -- [description]
+        """
+        self.map = cv2.resize(cv2.imread(map_path),
+                              (200, 160))  # 2d numpy [row][col][channel-rgb]
         self.map_width = self.map.shape[0]
         self.map_height = self.map.shape[1]
 
@@ -30,10 +36,22 @@ class Environment:
         self.goal_x = (min_goal_x + max_goal_x)
         self.goal_y = (min_goal_y + max_goal_y)
         """
-        self.start_x = 50
-        self.start_y = 50
-        self.goal_x = 150
+        self.start_x = 10
+        self.start_y = 10
+        self.goal_x = 190
         self.goal_y = 150
 
-        self.map = cv2.circle(self.map, (int(self.goal_x), int(self.goal_y)),
-                              color=(255, 0, 0), radius=5, thickness=-1)
+        self.map = cv2.circle(self.map, (int(self.goal_x), int(
+            self.goal_y)), color=GOAL, radius=5, thickness=-1)
+
+    def type(self, x, y):
+        if x < 0 or y < 0 or x >= self.map_width or y >= self.map_height:
+            return "OUT"
+        elif (self.map[x][y] == ROBOT).all():
+            return "ROBOT"
+        elif (self.map[x][y] == OBSTACLE).all():
+            return "OBSTACLE"
+        elif (self.map[x][y] == BLANK).all():
+            return "SAFE"
+        else:
+            return "UNKNOWN"
