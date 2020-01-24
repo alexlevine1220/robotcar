@@ -1,19 +1,27 @@
 from cv2 import cv2
 import math
-from Constants import ROBOT, GOAL, OBSTACLE, BLANK
+from Constants import Color
 
 
 class Environment:
+    """ Environmnet class
+
+    Attributes:
+        map (numpy_3d_array) : (y, x, RGB_channel)
+        map_width (int): maxmimum x of the map
+        map_height (int): maximum y of the map
+    """
+
     def __init__(self, map_path):
-        """[summary]
+        """ Constructor for Environment
 
         Arguments:
-            map_path {[type]} -- [description]
+            map_path (string) : map path
         """
         self.map = cv2.resize(cv2.imread(map_path),
-                              (200, 160))  # 2d numpy [row][col][channel-rgb]
-        self.map_width = self.map.shape[0]
-        self.map_height = self.map.shape[1]
+                              (500, 400))  # 2d numpy [row][col][channel-rgb]
+        self.map_width = self.map.shape[1]
+        self.map_height = self.map.shape[0]
 
         # TODO : once drawing is done, change to this
         """
@@ -36,24 +44,26 @@ class Environment:
         self.goal_x = (min_goal_x + max_goal_x)
         self.goal_y = (min_goal_y + max_goal_y)
         """
-        self.start_x = 10
-        self.start_y = 20
-        self.goal_x = 190
-        self.goal_y = 150
-
-        self.map = cv2.circle(self.map, (int(self.goal_x), int(
-            self.goal_y)), color=GOAL, radius=5, thickness=-1)
+        self.start_x = 25
+        self.start_y = 25
+        self.goal_x = 300
+        self.goal_y = 210
 
     def type(self, x, y):
-        if x < 0 or y < 0 or x >= self.map_width or y >= self.map_height:
-            return "OUT"
-        elif (self.map[y][x] == ROBOT).all():
-            return "ROBOT"
-        elif (self.map[y][x] == OBSTACLE).all():
+        """ TODO PIXEL -> VERTEX 
+
+        Arguments:
+            x {} -- [description]
+            y {} -- [description]
+
+        Returns:
+            type_pixel -- [description]
+        """
+        if x < 0 or y < 0 or x >= self.map_width or y >= self.map_height or (self.map[y][x] == Color.OBSTACLE).all():
             return "OBSTACLE"
-        elif (self.map[y][x] == BLANK).all():
+        elif (self.map[y][x] == Color.BLANK).all():
             return "SAFE"
-        elif (self.map[y][x] == GOAL).all():
+        elif (self.map[y][x] == Color.BLANK).all():
             return "GOAL"
         else:
             return "UNKNOWN"
