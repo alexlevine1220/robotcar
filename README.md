@@ -1,3 +1,7 @@
+Download with
+
+pip3 install robotcar
+
 Types of Sensor :
 
     - birdeye()
