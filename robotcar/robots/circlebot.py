@@ -1,10 +1,10 @@
 import math
-from robotcar.core import COLOR, Robot, ROBOT, ACTION
+from robotcar.core import COLOR, Robot, ACTION
 from time import sleep
 from cv2 import cv2
 
 
-class CircleBot(Robot):
+class Circlebot(Robot):
     """
     Attributes:
     """
