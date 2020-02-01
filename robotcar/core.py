@@ -11,33 +11,6 @@ class COLOR:
     BLANK = (255, 255, 255)
 
 
-class ACTION:
-    """ Action types constants
-    """
-    MOVE = "MOVE"
-    LTURN = "LTURN"
-    RTURN = "RTURN"
-
-
-class ROBOT:
-    """ Robot types constants
-    """
-    CIRCLE = "CIRCLE"
-    SQUARE = "SQUARE"
-
-
-class SENSOR:
-    """ Seonsor types constants
-    """
-    BIRDEYE = "BIRDEYE"
-
-
-class ENV:
-    """ Environment types constants
-    """
-    ENV_1 = "ENV_1"
-
-
 class Object:
     def __init__(self, x, y, vertices=None, radius=None):
         raise NotImplementedError
@@ -57,33 +30,38 @@ class Object:
 
 class Robot:
     """ Abstract class for Robot
-
-    Attributes:
-        robot_types : 
     """
+    CIRCLE = "CIRCLE"
+    SQUARE = "SQUARE"
 
-    def __init__(self, sensor_types):
+    def __init__(self, env, sensors, x, y):
         self.action_space = None
-        self.sensors = []
-        for sensor in sensor_types:
-            self.sensors.append(sensor)
+        self.sensors = sensors
+        self._env = env
+        self._x = x
+        self._y = x
 
     def step(self, action):
         raise NotImplementedError
 
     def sense(self):
-        sensor_data = []
-
+        sensor_data = {}
+        for k, v in self.sensors:
+            sensor_data[k] = v.sense(self._x, self._y)
         return sensor_data
 
 
 class Sensor:
     """ Abstract class for Sensor
 
+    Class Varibale:
+        BIRDEYE
+
     Attributes:
         sensor_type {SENSOR} : sensor types
         env {Environment} : environment where sensor resides
     """
+    BIRDEYE = "BIRDEYE"
 
     def __init__(self, env):
         self._env = env
@@ -101,6 +79,7 @@ class Environment:
         goal_x, goal_y {float} : goal position
         obstacles {[Object]} : list of obstacles in the environment
     """
+    ENV_1 = "ENV_1"
 
     def __init__(self):
         self.map_width, self.map_height = None, None

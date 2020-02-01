@@ -2,7 +2,7 @@ from cv2 import cv2
 from time import time
 
 from robotcar.environments import *
-from robotcar.core import Robot, Sensor, Environment, ENV, ROBOT, SENSOR
+from robotcar.core import Robot, Sensor, Environment
 from robotcar.robots import *
 from robotcar.sensors import *
 
@@ -28,10 +28,7 @@ class Simulator:
             debug (bool) : whether print debug information (default: {False})
         """
         self.env = self.create_environment(map_type)
-        sensors = {}
-        for sensor_type in sensor_types:
-            sensors[sensor_type] = self.create_sensor(sensor_type)
-        self.robot = self.create_robot(robot_type, sensors, self.env,
+        self.robot = self.create_robot(robot_type, sensor_types,
                                        self.env.start_x, self.env.start_y)
         self.total_step = 0
         self.debug = debug
@@ -41,12 +38,15 @@ class Simulator:
         self.last_render_time = 0
 
     def create_environment(self, map_type):
-        if map_type == ENV.ENV_1:
+        if map_type == Environment.ENV_1:
             return env_1()
 
-    def create_robot(self, robot_type, env, sensor_types, start_x, start_y):
-        if robot_type == ROBOT.SQUARE:
-            return SquareBot(env, sensor_types, start_x, start_y)
+    def create_robot(self, robot_type, sensor_types, start_x, start_y):
+        sensors = {}
+        for sensor_type in sensor_types:
+            sensors[sensor_type] = self.create_sensor(sensor_type)
+        if robot_type == Robot.SQUARE:
+            return Squarebot(self.env, sensor_types, start_x, start_y)
 
     def create_sensor(self, sensor_type):
         if sensor_type == SENSOR.BIRDEYE:
