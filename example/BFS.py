@@ -20,9 +20,8 @@ class BfsAgent:
 
 
 if __name__ == "__main__":
-    print(dir(robotcar.Robot))
     sim = robotcar.Simulator("SQUARE", {
-                             robotcar.Sensor.BIRDEYE}, robotcar.Environment.ENV_1, debug=True)
+                             robotcar.Sensor.BIRDEYE}, robotcar.Map.MAP_1, debug=True)
 
     sensor_data, done = sim.reset()
     agent = BfsAgent(sensor_data)
@@ -31,6 +30,3 @@ if __name__ == "__main__":
         sim.render()
         action = agent.act(sensor_data)
         sensor, done = sim.step(action)
-
-        if done:
-            break

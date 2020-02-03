@@ -1,1 +1,1 @@
-from robotcar.robots.squarebot import SquareBot
+from robotcar.robots.squarebot import Squarebot
