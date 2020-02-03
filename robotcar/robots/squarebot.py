@@ -1,6 +1,6 @@
 from robotcar.core import Robot, Geometry
 from robotcar.geometries import Rectangle
-from robotcar import Map
+from robotcar.map import Map
 from cv2 import cv2
 
 

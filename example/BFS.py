@@ -21,7 +21,7 @@ class BfsAgent:
 
 if __name__ == "__main__":
     sim = robotcar.Simulator("SQUARE", {
-                             robotcar.Sensor.BIRDEYE}, robotcar.Map.MAP_1, debug=True)
+                             robotcar.Sensor.BIRDEYE}, robotcar.Map("practice.json"), debug=True)
 
     sensor_data, done = sim.reset()
     agent = BfsAgent(sensor_data)
