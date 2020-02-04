@@ -1,6 +1,7 @@
 from robotcar.geometries import Rectangle
 from random import randrange
 import numpy as np
+from cv2 import cv2
 
 
 class Map:
@@ -12,15 +13,15 @@ class Map:
         goal_x, goal_y {float} : goal position
         obstacles {[Geometry]} : list of Geometries in the environment
     """
-    ROBOT = (255, 0, 0)
+    ROBOT = (1, 0, 0)
     OBSTACLE = (0, 0, 0)
-    GOAL = (0, 0, 255)
-    BLANK = (255, 255, 255)
+    GOAL = (0, 0, 1)
+    SAFE = (1, 1, 1)
 
     def __init__(self, map_json):
         self.map_width, self.map_height = 500, 500
-        self.start_x, self.start_y = randrange(500), randrange(500)
-        self.goal_x, self.goal_y = randrange(500), randrange(500)
+        self.start_x, self.start_y = 250, 250
+        self.goal_x, self.goal_y = 100, 400
 
         # Boundary
         self.obstacles = [
@@ -36,8 +37,9 @@ class Map:
     def get_map(self):
         """ Return map 
         """
-        map = np.ones((self.map_height, self.map_width)) * 255
+        map = np.ones((self.map_height, self.map_width, 3))
+        map = cv2.circle(map, (self.goal_x, self.goal_y), 10, Map.GOAL, -1)
 
         for obstacle in self.obstacles:
-            obstacle.draw(map)
+            map = obstacle.draw(map)
         return map

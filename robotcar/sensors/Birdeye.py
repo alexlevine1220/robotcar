@@ -2,9 +2,14 @@ from robotcar.core import Sensor
 
 
 class Birdeye(Sensor):
-    def __init__(self, env):
-        super().__init__(env)
-        self.map = env.get_map
+    def __init__(self, map):
+        super().__init__(map)
 
     def sense(self, x, y):
-        return self.map
+        return {
+            "x": x,
+            "y": y,
+            "goal_x": self._map.goal_x,
+            "goal_y": self._map.goal_y,
+            "map": self._map.get_map()
+        }

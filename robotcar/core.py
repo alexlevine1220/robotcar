@@ -21,6 +21,9 @@ class Geometry:
         """
         return float("inf")
 
+    def containsPoint(self, x, y):
+        raise NotImplementedError
+
     def draw(self, map):
         """ draw following object on the map
 
@@ -33,7 +36,6 @@ class Geometry:
 class Robot(Geometry):
     """ Abstract class for Robot
     """
-    CIRCLE = "CIRCLE"
     SQUARE = "SQUARE"
     SIDE = 10
 
@@ -50,28 +52,22 @@ class Robot(Geometry):
     def step(self, action):
         raise NotImplementedError
 
+    def boundaries(self):
+        raise NotImplementedError
+
     def sense(self):
         sensor_data = {}
-        print(self.sensors)
-        for k, v in self.sensors.items():
-            sensor_data[k] = v.sense(self._x, self._y)
+        for sensor in self.sensors:
+            for k, v in sensor.sense(self._x, self._y).items():
+                sensor_data[k] = v
         return sensor_data
 
 
 class Sensor:
-    """ Abstract class for Sensor
-
-    Class Varibale:
-        BIRDEYE
-
-    Attributes:
-        sensor_type {SENSOR} : sensor types
-        env {Environment} : environment where sensor resides
-    """
     BIRDEYE = "BIRDEYE"
 
-    def __init__(self, env):
-        self._env = env
+    def __init__(self, map):
+        self._map = map
 
     def sense(self, x, y):
         raise NotImplementedError

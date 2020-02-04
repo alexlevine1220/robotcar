@@ -16,14 +16,31 @@ class Squarebot(Robot):
                              Squarebot.RIGHT, Squarebot.UP, Squarebot.DOWN}
 
     def draw(self, map):
-        return cv2.rectangle(map, (int(self._x - self.SIDE / 2), int(self._y - self.SIDE / 2)), (int(self._x + self.SIDE / 2), int(self._y + self.SIDE / 2)), Map.ROBOT, -1)
+        return cv2.rectangle(map, (int(self._x - self.SIDE / 2), int(self._y - self.SIDE / 2)),
+                             (int(self._x + self.SIDE / 2), int(self._y + self.SIDE / 2)), Map.ROBOT, -1)
+
+    def boundaries(self):
+        return [(self._x - self.SIDE / 2, self._y - self.SIDE / 2), (self._x - self.SIDE / 2, self._y + self.SIDE),
+                (self._x + self.SIDE / 2, self._y - self.SIDE / 2), (self._x + self.SIDE / 2, self._y + self.SIDE / 2)]
 
     def step(self, action):
+        nx = self._x
+        ny = self._y
         if action == Squarebot.LEFT:
-            self._x -= 1
+            nx -= 1
         if action == Squarebot.RIGHT:
-            self._x += 1
+            nx += 1
         if action == Squarebot.UP:
-            self._y += 1
+            ny += 1
         if action == Squarebot.DOWN:
-            self._y -= 1
+            ny -= 1
+        collide = False
+
+        for bx, by in self.boundaries():
+            for obs in self._map.obstacles:
+                if not collide and obs.containsPoint(bx, by):
+                    collide = True
+
+        if not collide:
+            self._x = nx
+            self._y = ny
