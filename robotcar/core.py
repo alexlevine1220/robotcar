@@ -10,7 +10,7 @@ class Geometry:
         raise NotImplementedError
 
     def distance(self, x, y, angle):
-        """ Check  distance from a point with given angle
+        """ Check distance from a point with given angle
 
         Arguments:
             x (float) : staring position
@@ -21,33 +21,40 @@ class Geometry:
         """
         return float("inf")
 
-    def containsPoint(self, x, y):
+    def contains_point(self, x, y):
+        """ Check whether (x, y) is in the geometry
+        
+        Arguments:
+            (x, y) : coordinate to check
+        """
         raise NotImplementedError
 
-    def draw(self, map):
-        """ draw following object on the map
+    def draw_grid(self, grid):
+        """ draw following object on the grid
 
         Arguments:
-            map {np.array} : map where the geometry will be drawn
+            grid {np.array} : grid where the geometry will be drawn
         """
         raise NotImplementedError
 
 
 class Robot(Geometry):
     """ Abstract class for Robot
-    """
-    SQUARE = "SQUARE"
-    SIDE = 10
+    Attributes:
+        action_space : types of actions that robot can have
+        sensors : types of sensors that robot has
 
-    def __init__(self, map, sensors, x, y):
+    """
+
+    # robots/README.md for more information 
+    SQUARE = "SQUARE"
+
+    def __init__(self, env, sensors, x, y):
         self.action_space = None
         self.sensors = sensors
-        self._map = map
+        self._env = env
         self._x = x
         self._y = y
-
-    def draw(self, map):
-        raise NotImplementedError
 
     def step(self, action):
         raise NotImplementedError

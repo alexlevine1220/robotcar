@@ -4,7 +4,8 @@ from time import time
 from robotcar.core import Sensor, Robot
 from robotcar.robots import *
 from robotcar.sensors import *
-from robotcar.map import Map
+from robotcar.env import Env
+import json
 
 from vtkplotter import Box, show
 
@@ -20,23 +21,55 @@ class Simulator:
         start_time (int) : start time in microsecond
     """
 
-    def __init__(self, robot_type, sensor_types, map_type, debug=False):
+    def __init__(self, json_path, debug=False):
         """ Constructor for simulator
 
         Arguments:
-            robot_type (str) : available robot_types are listed in README
-            sensors ([str]) : available sensor_types are listed in README
-            map_type (str) : Read README.md to learn more
+            robot_type (str) : available robot_types are listed in "robots/README"
+            sensors (str) : available sensor_types are listed in "sensors/README"
+            map_type (str) : practice README.md to learn more
             debug (bool) : whether print debug information (default: {False})
         """
-        self.map = Map(map_type)
+        #with open(json_path, "r") as read_file:
+        #    config = json.load(read_file)
+        config = {
+            "name": "[1]Empty",
+            "robot_type": "SQUARE",
+            "sensor_types": ["BIRDEYE"],
+            "width": 500,
+            "height": 1000,
+            "start_x": 10,
+            "start_y": 30,
+            "goal_x": 430,
+            "goal_y": 430,
+            "obstacles": [
+                {
+                "type": "RECTANGLE",
+                "x1":200,
+                "y1":300,
+                "x2":300,
+                "y2":350
+                }
+            ]
+        }
+
+        robot_type = config["robot_type"]
+        sensor_types = config["sensor_types"] 
+        width = config["width"]
+        height = config["height"]
+        start_x = config["start_x"]
+        start_y = config["start_y"]
+        goal_x = config["goal_x"]
+        goal_y = config["goal_y"]
+        obstacles = config["obstacles"] if "obstacles" in config else []
+
+        self.map = Env(width, height, start_x, start_y, goal_x, goal_y, obstacles)
         self.robot = self.create_robot(robot_type, sensor_types,
                                        self.map.start_x, self.map.start_y)
         self.total_step = 0
-        self.debug = debug
         self.world = Box([self.map.map_width / 2, self.map.map_height/2, 10/2],
                          self.map.map_width, self.map.map_height, 10).wireframe()
-        # show(self.world, axes=1, bg="white", viewup="z", interactive=0)
+        show(self.world, axes=1, bg="white", viewup="z", interactive=0)
 
         self.vt_boxes = ()
 
@@ -94,9 +127,9 @@ class Simulator:
         """ Draw map and robot on the screen.
         """
 
-        map = self.map.get_map()
+        map = self.map.grid
         map = self.robot.draw(map)
-        cv2.imshow("lab", map)
         cv2.waitKey(1)
+        cv2.imshow("lab", map)
         self.vt_car.pos(self.robot._x, self.robot._y, 0)
         show(self.vt_car, self.vt_boxes, self.vt_goal)

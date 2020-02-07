@@ -11,5 +11,5 @@ class Birdeye(Sensor):
             "y": y,
             "goal_x": self._map.goal_x,
             "goal_y": self._map.goal_y,
-            "map": self._map.get_map()
+            "grid": self._map.grid
         }

@@ -1,6 +1,6 @@
 from robotcar.core import Robot, Geometry
 from robotcar.geometries import Rectangle
-from robotcar.map import Map
+from robotcar.env import Env
 from cv2 import cv2
 
 
@@ -9,15 +9,12 @@ class Squarebot(Robot):
     RIGHT = "RIGHT"
     UP = "UP"
     DOWN = "DOWN"
+    SIDE = 10
 
-    def __init__(self, map, sensors, start_x, start_y):
-        super().__init__(map, sensors, start_y, start_y)
+    def __init__(self, env, sensors, start_x, start_y):
+        super().__init__(env, sensors, start_y, start_y)
         self.action_space = {Squarebot.LEFT,
                              Squarebot.RIGHT, Squarebot.UP, Squarebot.DOWN}
-
-    def draw(self, map):
-        return cv2.rectangle(map, (int(self._x - self.SIDE / 2), int(self._y - self.SIDE / 2)),
-                             (int(self._x + self.SIDE / 2), int(self._y + self.SIDE / 2)), Map.ROBOT, -1)
 
     def boundaries(self):
         return [(self._x - self.SIDE / 2, self._y - self.SIDE / 2), (self._x - self.SIDE / 2, self._y + self.SIDE),
@@ -37,7 +34,7 @@ class Squarebot(Robot):
         collide = False
 
         for bx, by in self.boundaries():
-            for obs in self._map.obstacles:
+            for obs in self._env.obstacles:
                 if not collide and obs.containsPoint(bx, by):
                     collide = True
 
