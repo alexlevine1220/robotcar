@@ -6,8 +6,8 @@ import robotcar
 
 
 class Geometry:
-    def __init__(self, x, y, color):
-        raise NotImplementedError
+    def __init__(self, color):
+        self.color = color
 
     def distance(self, x, y, angle):
         """ Check distance from a point with given angle
@@ -23,7 +23,7 @@ class Geometry:
 
     def contains_point(self, x, y):
         """ Check whether (x, y) is in the geometry
-        
+
         Arguments:
             (x, y) : coordinate to check
         """
@@ -46,7 +46,7 @@ class Robot(Geometry):
 
     """
 
-    # robots/README.md for more information 
+    # robots/README.md for more information
     SQUARE = "SQUARE"
 
     def __init__(self, env, sensors, x, y):
@@ -55,6 +55,7 @@ class Robot(Geometry):
         self._env = env
         self._x = x
         self._y = y
+        self.color = (1, 0, 0)
 
     def step(self, action):
         raise NotImplementedError

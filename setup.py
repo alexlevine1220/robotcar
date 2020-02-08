@@ -17,7 +17,7 @@ print(find_packages())
 
 setup(
     name="robotcar",
-    version="1.0.1",
+    version="1.0.2",
     description="robotcar simulator package for education",
     long_description=readme(),
     long_description_content_type="text/markdown",

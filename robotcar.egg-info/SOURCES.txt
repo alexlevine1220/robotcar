@@ -1,10 +1,10 @@
 README.md
 setup.py
-robotcar/BFS.py
 robotcar/Simulator.py
+robotcar/[2]BFS.py
 robotcar/__init__.py
 robotcar/core.py
-robotcar/map.py
+robotcar/env.py
 robotcar/simulator.py
 robotcar.egg-info/PKG-INFO
 robotcar.egg-info/SOURCES.txt
