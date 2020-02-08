@@ -4,17 +4,23 @@ from robotcar.env import Env
 from cv2 import cv2
 
 
-class Squarebot(Robot):
+class Squarebot(Robot, Rectangle):
     LEFT = "LEFT"
     RIGHT = "RIGHT"
     UP = "UP"
     DOWN = "DOWN"
     SIDE = 10
+    COLOR = (0, 0, 1)
 
     def __init__(self, env, sensors, start_x, start_y):
         super().__init__(env, sensors, start_y, start_y)
         self.action_space = {Squarebot.LEFT,
                              Squarebot.RIGHT, Squarebot.UP, Squarebot.DOWN}
+
+    @property
+    def vertices(self):
+        return [(self._x - self.SIDE / 2, self._y - self.SIDE / 2), (self._x - self.SIDE / 2, self._y + self.SIDE),
+                (self._x + self.SIDE / 2, self._y + self.SIDE / 2), (self._x + self.SIDE / 2, self._y - self.SIDE / 2)]
 
     def boundaries(self):
         return [(self._x - self.SIDE / 2, self._y - self.SIDE / 2), (self._x - self.SIDE / 2, self._y + self.SIDE),

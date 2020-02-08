@@ -36,20 +36,21 @@ class Env:
         for obstacle in obstacles:
             self.obstacles.append(self.create_obstacle(obstacle))
 
-        grid = cv2.circle(np.ones((height, width, 3)), (goal_x, goal_y), 10, Env.GOAL, -1)
+        grid = cv2.circle(np.ones((height, width, 3)),
+                          (goal_x, goal_y), 10, Env.GOAL, -1)
 
         for obstacle in self.obstacles:
             grid = obstacle.draw(grid)
-        
+
         self.grid = grid
 
     def create_obstacle(self, config):
         """ Create Obstacles object based on config
-        
+
         Arguments:
             config (Obstacle) : look at README.md in robotcar/practice
         Returns:
             Rectangle : Created object
         """
-        if config["type"] == "rectangle":
+        if config["type"] == "RECTANGLE":
             return Rectangle(config["x1"], config["y1"], config["x2"], config["y2"], Env.OBSTACLE)

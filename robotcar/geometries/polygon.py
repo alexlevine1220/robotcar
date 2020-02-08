@@ -6,13 +6,12 @@ import numpy as np
 class Polygon(Geometry):
     def __init__(self, vertices, color):
         """
-
         Arguments:
             Geometry {[type]} -- [description]
             vertices {[type]} -- [description]
         """
+        super().__init__(color)
         self.vertices = vertices
-        self.color = color
 
     def draw(self, map):
         return cv2.fillPoly(map, [np.array(self.vertices)], self.color)
