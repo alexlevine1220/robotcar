@@ -65,6 +65,7 @@ class Robot(Geometry):
 
 class Sensor:
     BIRDEYE = "BIRDEYE"
+    LIDAR = "LIDAR"
 
     def __init__(self, map):
         self._map = map

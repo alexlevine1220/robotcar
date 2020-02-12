@@ -18,6 +18,9 @@ class Map:
     GOAL = (0, 0, 1)
     SAFE = (1, 1, 1)
 
+    OBSTACLE_COUNT = 10
+    OBSTACLE_SIDE_LENGTH = 10
+
     def __init__(self, map_json):
         self.map_width, self.map_height = 500, 500
         self.start_x, self.start_y = 250, 250
@@ -25,17 +28,19 @@ class Map:
 
         # Boundary
         self.obstacles = [
-            Rectangle(0, 0, self.map_width - 1,
-                      10, Map.OBSTACLE),      # UP
-            Rectangle(0, self.map_height - 10, self.map_width,
-                      self.map_height - 1, Map.OBSTACLE),               # DOWN
-            Rectangle(0, 0, 10, self.map_height - 1, Map.OBSTACLE),     # LEFT
-            Rectangle(self.map_width - 10, 0, self.map_width - 1,
-                      self.map_height - 1, Map.OBSTACLE),               # RIGHT
+            Rectangle(Map.OBSTACLE, False, [0, 0, self.map_width - 1, 10]),                                               # UP
+            Rectangle(Map.OBSTACLE, False, [0, self.map_height - 10, self.map_width, self.map_height - 1]),               # DOWN
+            Rectangle(Map.OBSTACLE, False, [0, 0, 10, self.map_height - 1]),                                              # LEFT
+            Rectangle(Map.OBSTACLE, False, [self.map_width - 10, 0, self.map_width - 1, self.map_height - 1]),            # RIGHT
         ]
 
+        xInterval = (0 + Map.OBSTACLE_SIDE_LENGTH, self.map_width - Map.OBSTACLE_SIDE_LENGTH)
+        yInterval = (0 + Map.OBSTACLE_SIDE_LENGTH, self.map_height - Map.OBSTACLE_SIDE_LENGTH)
+        for i in range(Map.OBSTACLE_COUNT):
+            self.obstacles.append(Rectangle(Map.OBSTACLE, True, None, Map.OBSTACLE_SIDE_LENGTH, xInterval, yInterval))
+
     def get_map(self):
-        """ Return map 
+        """ Return map
         """
         map = np.ones((self.map_height, self.map_width, 3))
         map = cv2.circle(map, (self.goal_x, self.goal_y), 10, Map.GOAL, -1)

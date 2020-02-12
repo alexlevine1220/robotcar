@@ -14,7 +14,7 @@ class Simulator:
 
     Attributes:
         env (Environment) : Where robot resides
-        robot (Robot) : Simulating robot 
+        robot (Robot) : Simulating robot
         total_step (int) : number of steps taken by Tobot
         debug (bool) : whether print debug information (default: {False})
         start_time (int) : start time in microsecond
@@ -75,7 +75,7 @@ class Simulator:
         return self.robot.sense(), 0
 
     def step(self, action_type):
-        """ Take one step for robot 
+        """ Take one step for robot
         Args:
             action_type (string): choose action
         Returns:
@@ -94,9 +94,9 @@ class Simulator:
         """ Draw map and robot on the screen.
         """
 
-        map = self.map.get_map()
-        map = self.robot.draw(map)
-        cv2.imshow("lab", map)
-        cv2.waitKey(1)
+        # map = self.map.get_map()
+        # map = self.robot.draw(map)
+        # cv2.imshow("lab", map)
+        # cv2.waitKey(1)
         self.vt_car.pos(self.robot._x, self.robot._y, 0)
         show(self.vt_car, self.vt_boxes, self.vt_goal)
