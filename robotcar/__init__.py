@@ -1,5 +1,7 @@
 from cv2 import cv2
 
-from robotcar.core import Robot, Sensor, Geometry
+from robotcar.collision import *
+from robotcar.geometry import *
+from robotcar.robot import *
+from robotcar.sensor import *
 from robotcar.simulator import Simulator
-from robotcar.env import Env

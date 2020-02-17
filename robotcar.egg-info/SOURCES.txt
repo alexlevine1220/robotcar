@@ -1,8 +1,8 @@
 README.md
 setup.py
 robotcar/Simulator.py
-robotcar/[2]BFS.py
 robotcar/__init__.py
+robotcar/collision.py
 robotcar/core.py
 robotcar/env.py
 robotcar/simulator.py
