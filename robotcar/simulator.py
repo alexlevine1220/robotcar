@@ -3,12 +3,10 @@ from time import time
 from robotcar import Rectangle, Collision, Squarebot, Sensor, Robot, Birdeye, create_geometry
 from vtkplotter import Box, show
 import numpy as np
-import pygame
 
 
 class Simulator:
     def __init__(self, config, debug=False):
-        pygame.init()
 
         robot_type = config["robot_type"]
         sensor_types = config["sensor_types"]
@@ -71,9 +69,6 @@ class Simulator:
         return self.robot.step(action_type), done
 
     def running(self):
-        key = pygame.key.get_pressed()
-        if key[pygame.K_q]:
-            return False
         return True
 
     def render(self):
