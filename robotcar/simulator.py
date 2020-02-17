@@ -1,7 +1,10 @@
 from cv2 import cv2
 from time import time
-from robotcar import Rectangle, Collision, Squarebot, Sensor, Robot, Birdeye, create_geometry
+from geometry import Rectangle, create_geometry
+from collision import Collision
 from vtkplotter import Box, show
+from robot import *
+from sensor import *
 import numpy as np
 
 
@@ -34,7 +37,7 @@ class Simulator:
 
         if debug:
             for obs in self.obstacles:
-                self.vt_boxes += (obs.vtk_render('black'), )
+                self.vt_boxes += (obs.vtk_object('black'), )
 
         self.vt_goal = Box((self.goal_x, self.goal_y, 0),
                            10, 10, 10, size=(), c="b", alpha=1)
@@ -72,5 +75,5 @@ class Simulator:
         return True
 
     def render(self):
-        show(self.robot.vtk_render('red'),
-             self.vt_boxes, self.vt_goal)
+        vt_robots = self.robot.vtk_object('red')
+        show(vt_robots, self.vt_boxes, self.vt_goal)

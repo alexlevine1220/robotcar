@@ -1,3 +1,6 @@
+from geometry import Line
+
+
 def create_sensor(config, collision):
     if config["type"] == "BIRDEYE":
         return Birdeye(collision)
@@ -28,6 +31,7 @@ class Birdeye(Sensor):
         }
 
 
-class Lidar(Sensor):
+class Lidar(Sensor, Line):
     def __init__(self, collision):
         self.collision = collision
+        

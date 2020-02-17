@@ -1,9 +1,5 @@
-from robotcar import Geometry
-from robotcar import Rectangle
+from geometry import Geometry, Rectangle
 
-"""
-
-"""
 
 class Robot(Geometry):
     """ Abstract class for Robot
@@ -53,13 +49,13 @@ class Squarebot(Robot, Rectangle):
     def step(self, action):
         nx = self.x
         ny = self.y
-        if action == Squarebot.LEFT:
+        if action == "LEFT":
             nx -= 1
-        if action == Squarebot.RIGHT:
+        if action == "RIGHT":
             nx += 1
-        if action == Squarebot.UP:
+        if action == "UP":
             ny += 1
-        if action == Squarebot.DOWN:
+        if action == "DOWN":
             ny -= 1
 
         if not self.collision.isCollide(self):

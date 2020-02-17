@@ -1,4 +1,4 @@
-import robotcar
+from simulator import Simulator
 import random
 import time
 import math
@@ -21,11 +21,18 @@ config = {
             "y": 300,
             "width": 30,
             "height": 50,
+        },
+        {
+            "type": "RECTANGLE",
+            "x": 500,
+            "y": 500,
+            "width": 30,
+            "height": 50,
         }
     ]
 }
 
-sim = robotcar.Simulator(config, debug=True)
+sim = Simulator(config, debug=True)
 sensor_data, done, goal_x, goal_y = sim.reset()
 
 right = 200
